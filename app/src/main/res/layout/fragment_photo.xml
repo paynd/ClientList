@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         android:layout_margin="50dp"
         android:contentDescription="@string/client_photo"
+        android:src="@drawable/img"
         app:layout_constraintBottom_toTopOf="@+id/take_photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

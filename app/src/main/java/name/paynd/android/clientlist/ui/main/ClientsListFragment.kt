@@ -2,7 +2,6 @@ package name.paynd.android.clientlist.ui.main
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,9 +26,8 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
     lateinit var vmFactory: VMFactory
 
     private val viewModel: FatViewModel by viewModels { vmFactory }
-
     private val viewBinding by viewBinding(FragmentClientsListBinding::bind)
-    private var adapter: ClientAdapter? = null
+    private var clientAdapter: ClientAdapter? = null
 
     override fun onAttach(context: Context) {
         (activity?.application as App).appComponent?.inject(this)
@@ -39,15 +37,15 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ClientAdapter {
+        clientAdapter = ClientAdapter {
+            viewModel.currentClient = it.toTransferObject()
             Navigation.findNavController(viewBinding.root)
                 .navigate(R.id.action_clientsListFragment_to_weightFragment)
         }
 
-
-        with(viewBinding.list) {
-            layoutManager = LinearLayoutManager(context)
-            this.adapter = adapter
+        with(viewBinding) {
+            list.layoutManager = LinearLayoutManager(context)
+            list.adapter = clientAdapter
         }
 
         viewBinding.addClient.setOnClickListener {
@@ -58,20 +56,9 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.list.collect { clientList ->
-                    Log.d("####", "collect : $clientList")
                     updateUI(clientList)
                 }
             }
-        }
-    }
-
-    // todo: to delete
-    override fun onResume() {
-        super.onResume()
-        kotlin.runCatching {
-            viewModel.list.replayCache.last()
-        }.onSuccess {
-            updateUI(it)
         }
     }
 
@@ -81,10 +68,15 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
                 tvNoClients.visibility = View.VISIBLE
                 list.visibility = View.INVISIBLE
             } else {
+                clientAdapter?.submitList(clientList)
                 tvNoClients.visibility = View.INVISIBLE
                 list.visibility = View.VISIBLE
-                adapter?.submitList(clientList)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        clientAdapter = null
     }
 }

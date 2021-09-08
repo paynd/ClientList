@@ -37,7 +37,8 @@ class FatViewModel @Inject constructor(
         val result = currentClient?.toClient()
 
         return if (result != null) {
-            dataSource.update(result)
+            dataSource.add(result)
+            currentClient = null
             true
         } else {
             false
@@ -64,3 +65,5 @@ fun ClientTransferObject.toClient(): Client? {
         Client(id, dob, weight, weightUnit, uri)
     } else null
 }
+
+fun Client.toTransferObject() = ClientTransferObject(id, dob, weight, weightUnit, uri)

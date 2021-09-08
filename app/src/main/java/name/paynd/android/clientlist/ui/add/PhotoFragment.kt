@@ -2,6 +2,7 @@ package name.paynd.android.clientlist.ui.add
 
 import android.content.Context
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -47,25 +48,36 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
         )
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.currentClient?.let {
+            it.uri?.let { uri ->
+                updatePhoto(uri)
+            }
+        }
+    }
+
     override fun onAttach(context: Context) {
         (activity?.application as App).appComponent?.inject(this)
         super.onAttach(context)
         launcher = registerImagePicker { result: List<Image> ->
             result.forEachIndexed { index, image ->
                 if (index == 0) { // first one only
-                    Log.d("####", "${image.id} \n${image.name} \n${image.uri} \n${image.path}")
-
                     viewModel.updatePhoto(image.uri)
-
-                    Glide
-                        .with(this)
-                        .load(image.uri)
-                        .centerCrop()
-                        .placeholder(R.drawable.img)
-                        .into(viewBinding.photo)
+                    updatePhoto(image.uri)
                 }
             }
         }
+    }
+
+    private fun updatePhoto(uri: Uri) {
+        Glide
+            .with(this)
+            .load(uri)
+            .centerCrop()
+            .placeholder(R.drawable.img)
+            .into(viewBinding.photo)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,5 +1,6 @@
 package name.paynd.android.clientlist.ui.main
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,14 +11,15 @@ import name.paynd.android.clientlist.R
 import name.paynd.android.clientlist.data.Client
 import name.paynd.android.clientlist.databinding.RvItemClientBinding
 
-class ClientAdapter(private val editClickListener: (String) -> Unit) :
+class ClientAdapter(private val editClickListener: (Client) -> Unit) :
     ListAdapter<Client, ClientAdapter.ViewHolder>(ClientItemDiffCallback()) {
     inner class ViewHolder(private val binding: RvItemClientBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n") // O_o you don't see it!
         fun bind(client: Client) {
             with(binding) {
                 tvBirthValue.text = client.dob
-                tvWeightValue.text = client.weight.toString()
+                tvWeightValue.text = "${client.weight} ${client.weightUnit}"
                 Glide
                     .with(root)
                     .load(client.uri)
@@ -25,7 +27,7 @@ class ClientAdapter(private val editClickListener: (String) -> Unit) :
                     .placeholder(R.drawable.img)
                     .into(image)
                 tvEdit.setOnClickListener {
-//                    editClickListener.invoke()
+                    //todo
                 }
             }
         }
