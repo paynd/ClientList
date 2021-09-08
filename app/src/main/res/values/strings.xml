@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ClientList</string>
+    <string name="client_photo">Client photo</string>
+    <string name="weight">Weight</string>
+    <string name="dob">DOB</string>
+    <string name="edit">EDIT</string>
+    <string name="no_clients_added_so_far">No clients added so far.</string>
+    <string name="add_client">ADD CLIENT</string>
+    <string name="next">NEXT</string>
+    <string name="back">BACK</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
