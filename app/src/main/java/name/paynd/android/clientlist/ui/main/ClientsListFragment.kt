@@ -2,6 +2,7 @@ package name.paynd.android.clientlist.ui.main
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import name.paynd.android.clientlist.App
 import name.paynd.android.clientlist.R
+import name.paynd.android.clientlist.data.Client
 import name.paynd.android.clientlist.databinding.FragmentClientsListBinding
 import name.paynd.android.clientlist.di.vm.VMFactory
 import javax.inject.Inject
@@ -24,7 +26,7 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
     @Inject
     lateinit var vmFactory: VMFactory
 
-    private val viewModel: ClientListViewModel by viewModels { vmFactory }
+    private val viewModel: FatViewModel by viewModels { vmFactory }
 
     private val viewBinding by viewBinding(FragmentClientsListBinding::bind)
     private var adapter: ClientAdapter? = null
@@ -56,17 +58,32 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.list.collect { clientList ->
-                    with(viewBinding) {
-                        if (clientList.isEmpty()) {
-                            tvNoClients.visibility = View.VISIBLE
-                            list.visibility = View.INVISIBLE
-                        } else {
-                            tvNoClients.visibility = View.INVISIBLE
-                            list.visibility = View.VISIBLE
-                            adapter?.submitList(clientList)
-                        }
-                    }
+                    Log.d("####", "collect : $clientList")
+                    updateUI(clientList)
                 }
+            }
+        }
+    }
+
+    // todo: to delete
+    override fun onResume() {
+        super.onResume()
+        kotlin.runCatching {
+            viewModel.list.replayCache.last()
+        }.onSuccess {
+            updateUI(it)
+        }
+    }
+
+    private fun updateUI(clientList: List<Client>) {
+        with(viewBinding) {
+            if (clientList.isEmpty()) {
+                tvNoClients.visibility = View.VISIBLE
+                list.visibility = View.INVISIBLE
+            } else {
+                tvNoClients.visibility = View.INVISIBLE
+                list.visibility = View.VISIBLE
+                adapter?.submitList(clientList)
             }
         }
     }

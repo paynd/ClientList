@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import name.paynd.android.clientlist.R
 import name.paynd.android.clientlist.data.Client
 import name.paynd.android.clientlist.databinding.RvItemClientBinding
 
@@ -15,10 +17,15 @@ class ClientAdapter(private val editClickListener: (String) -> Unit) :
         fun bind(client: Client) {
             with(binding) {
                 tvBirthValue.text = client.dob
-                tvWeightValue.text = client.weight
-//            binding.image // set image here
+                tvWeightValue.text = client.weight.toString()
+                Glide
+                    .with(root)
+                    .load(client.uri)
+                    .centerCrop()
+                    .placeholder(R.drawable.img)
+                    .into(image)
                 tvEdit.setOnClickListener {
-
+//                    editClickListener.invoke()
                 }
             }
         }

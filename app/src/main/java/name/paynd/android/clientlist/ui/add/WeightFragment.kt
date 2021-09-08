@@ -1,28 +1,67 @@
 package name.paynd.android.clientlist.ui.add
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import by.kirich1409.viewbindingdelegate.viewBinding
+import name.paynd.android.clientlist.App
 import name.paynd.android.clientlist.R
+import name.paynd.android.clientlist.data.toInt
+import name.paynd.android.clientlist.data.toUnit
 import name.paynd.android.clientlist.databinding.FragmentWeightBinding
+import name.paynd.android.clientlist.di.vm.VMFactory
+import name.paynd.android.clientlist.ui.main.FatViewModel
+import javax.inject.Inject
 
 class WeightFragment : Fragment(R.layout.fragment_weight) {
+    private val viewBinding by viewBinding(FragmentWeightBinding::bind)
 
-    private val viewBinding  by viewBinding(FragmentWeightBinding::bind)
+    @Inject
+    lateinit var vmFactory: VMFactory
+    private val viewModel: FatViewModel by viewModels { vmFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        with(viewBinding) {
+            weightUnit.apply {
+                minValue = 0
+                maxValue = 1
+                displayedValues = arrayOf(
+                    context.resources.getString(R.string.lb),
+                    context.resources.getString(R.string.kg)
+                )
+            }
 
-        with(viewBinding){
+            weightValue.apply {
+                maxValue = 1000
+                minValue = 1
+                value = 75
+            }
+
             next.setOnClickListener {
-                Navigation.findNavController(viewBinding.root).navigate(R.id.action_weightFragment_to_dateFragment)
+                viewModel.updateWeight(weightValue.value, weightUnit.value.toUnit())
+                Navigation.findNavController(viewBinding.root)
+                    .navigate(R.id.action_weightFragment_to_dateFragment)
             }
             back.setOnClickListener {
                 Navigation.findNavController(viewBinding.root).popBackStack()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.currentClient?.let {
+            it.weight?.let { value -> viewBinding.weightValue.value = value }
+            it.weightUnit?.let { unit -> viewBinding.weightUnit.value = unit.toInt() }
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        (activity?.application as App).appComponent?.inject(this)
+        super.onAttach(context)
     }
 }
