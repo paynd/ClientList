@@ -5,22 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
+import by.kirich1409.viewbindingdelegate.viewBinding
 import name.paynd.android.clientlist.R
+import name.paynd.android.clientlist.databinding.FragmentWeightBinding
 
-class WeightFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+class WeightFragment : Fragment(R.layout.fragment_weight) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_weight, container, false)
-    }
+    private val viewBinding  by viewBinding(FragmentWeightBinding::bind)
 
-    companion object {
-        const val TAG = "WeightFragment"
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        with(viewBinding){
+            next.setOnClickListener {
+                Navigation.findNavController(viewBinding.root).navigate(R.id.action_weightFragment_to_dateFragment)
+            }
+            back.setOnClickListener {
+                Navigation.findNavController(viewBinding.root).popBackStack()
+            }
+        }
     }
 }

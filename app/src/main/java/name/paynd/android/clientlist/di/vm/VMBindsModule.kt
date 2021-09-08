@@ -17,6 +17,6 @@ interface VMBindsModule {
     @[Binds IntoMap VMKey(ClientListViewModel::class)]
     fun bindClientListViewModel(sourcesViewModel: ClientListViewModel): ViewModel
 
-    @[Binds IntoMap VMKey(AddClientViewModel::class)]
-    fun bindAddClientViewModel(sourcesViewModel: AddClientViewModel): ViewModel
+//    @[Binds IntoMap VMKey(AddClientViewModel::class)]
+//    fun bindAddClientViewModel(sourcesViewModel: AddClientViewModel): ViewModel
 }

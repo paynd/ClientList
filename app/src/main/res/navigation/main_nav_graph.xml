@@ -3,16 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/mainActivity">
+    app:startDestination="@id/clientsListFragment">
 
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="name.paynd.android.clientlist.ui.main.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
-    <activity
-        android:id="@+id/addClientActivity"
-        android:name="name.paynd.android.clientlist.ui.add.AddClientActivity"
-        android:label="activity_add_client"
-        tools:layout="@layout/activity_add_client" />
+    <fragment
+        android:id="@+id/clientsListFragment"
+        android:name="name.paynd.android.clientlist.ui.main.ClientsListFragment"
+        android:label="ClientsListFragment">
+        <action
+            android:id="@+id/action_clientsListFragment_to_weightFragment"
+            app:destination="@id/weightFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/weightFragment"
+        android:name="name.paynd.android.clientlist.ui.add.WeightFragment"
+        android:label="fragment_weight"
+        tools:layout="@layout/fragment_weight">
+        <action
+            android:id="@+id/action_weightFragment_to_dateFragment"
+            app:destination="@id/dateFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dateFragment"
+        android:name="name.paynd.android.clientlist.ui.add.DateFragment"
+        android:label="fragment_date"
+        tools:layout="@layout/fragment_date">
+        <action
+            android:id="@+id/action_dateFragment_to_photoFragment"
+            app:destination="@id/photoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/photoFragment"
+        android:name="name.paynd.android.clientlist.ui.add.PhotoFragment"
+        android:label="fragment_photo"
+        tools:layout="@layout/fragment_photo" >
+        <action
+            android:id="@+id/action_photoFragment_to_clientsListFragment"
+            app:destination="@id/clientsListFragment" />
+    </fragment>
+
 </navigation>

@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.navigation.fragment.NavHostFragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import name.paynd.android.clientlist.App
 import name.paynd.android.clientlist.R
@@ -20,21 +21,17 @@ class AddClientActivity : AppCompatActivity(R.layout.activity_add_client), AddCl
 
     private val viewBinding: ActivityAddClientBinding by viewBinding(ActivityAddClientBinding::bind)
     private val viewModel: AddClientViewModel by viewModels { vmFactory }
+//    private val navController by lazy {
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.nav_host_container) as NavHostFragment
+//        navHostFragment.navController
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as App).appComponent?.inject(this)
         super.onCreate(savedInstanceState)
 
-        with(viewBinding) {
-            next.setOnClickListener {
-//                throttleFirst<Unit>(lifecycleScope) {
-                navigateNext()
-//                }
-            }
-            back.setOnClickListener {
-                navigateBack()
-            }
-        }
+//        navController.navigate(R.id.)
     }
 
     override fun navigateNext() {
@@ -42,16 +39,16 @@ class AddClientActivity : AppCompatActivity(R.layout.activity_add_client), AddCl
             when (viewModel.state) {
                 State.WEIGHT -> {
                     supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        replace<DateFragment>(R.id.container)
-                        addToBackStack(DateFragment.TAG)
+//                        setReorderingAllowed(true)
+//                        replace<DateFragment>(R.id.nav_host_container)
+//                        addToBackStack(DateFragment.TAG)
                     }
                 }
                 State.DATE -> {
                     supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        replace<PhotoFragment>(R.id.container)
-                        addToBackStack(PhotoFragment.TAG)
+//                        setReorderingAllowed(true)
+//                        replace<PhotoFragment>(R.id.nav_host_container)
+//                        addToBackStack(PhotoFragment.TAG)
                     }
                 }
                 State.PHOTO -> {

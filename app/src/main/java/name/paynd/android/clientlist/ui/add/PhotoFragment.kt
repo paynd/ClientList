@@ -1,27 +1,35 @@
 package name.paynd.android.clientlist.ui.add
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
+import by.kirich1409.viewbindingdelegate.viewBinding
 import name.paynd.android.clientlist.R
+import name.paynd.android.clientlist.databinding.FragmentPhotoBinding
 
-class PhotoFragment : Fragment() {
+class PhotoFragment : Fragment(R.layout.fragment_photo) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val viewBinding by viewBinding(FragmentPhotoBinding::bind)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo, container, false)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        with(viewBinding) {
+            next.setOnClickListener {
+                Navigation.findNavController(viewBinding.root)
+                    .navigate(
+                        R.id.action_photoFragment_to_clientsListFragment,
+                        null,
+                        NavOptions.Builder().setPopUpTo(
+                            R.id.clientsListFragment,
+                            true
+                        ).build()
+                    )
 
-    companion object {
-        const val TAG = "PhotoFragment"
+            }
+            back.setOnClickListener {
+                Navigation.findNavController(viewBinding.root).popBackStack()
+            }
+        }
     }
 }

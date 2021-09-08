@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import name.paynd.android.clientlist.data.DataSource
 import javax.inject.Inject
 
-class AddClientViewModel @Inject constructor(
+class AddClientViewModel constructor(
     private val dataSource: DataSource
 ) : ViewModel() {
     var state: State = State.WEIGHT

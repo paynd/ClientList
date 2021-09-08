@@ -20,46 +20,9 @@ import name.paynd.android.clientlist.ui.add.AddClientActivity
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-    @Inject
-    lateinit var vmFactory: VMFactory
-
-    private val viewBinding: ActivityMainBinding by viewBinding(ActivityMainBinding::bind)
-    private val viewModel: ClientListViewModel by viewModels { vmFactory }
-
-    private var adapter: ClientAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as App).appComponent?.inject(this)
         super.onCreate(savedInstanceState)
-
-        adapter = ClientAdapter {
-            // edit client
-        }
-
-        with(viewBinding.list) {
-            layoutManager = LinearLayoutManager(context)
-            this.adapter = adapter
-        }
-
-        viewBinding.addClient.setOnClickListener {
-            startActivity(AddClientActivity.newStartIntent(this))
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.list.collect { clientList ->
-                    with(viewBinding) {
-                        if (clientList.isEmpty()) {
-                            tvNoClients.visibility = VISIBLE
-                            list.visibility = INVISIBLE
-                        } else {
-                            tvNoClients.visibility = INVISIBLE
-                            list.visibility = VISIBLE
-                            adapter?.submitList(clientList)
-                        }
-                    }
-                }
-            }
-        }
     }
 }
