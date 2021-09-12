@@ -1,4 +1,4 @@
-package name.paynd.android.clientlist.ui.main
+package name.paynd.android.clientlist.ui.list
 
 import android.content.Context
 import android.os.Bundle
@@ -18,14 +18,14 @@ import name.paynd.android.clientlist.R
 import name.paynd.android.clientlist.data.Client
 import name.paynd.android.clientlist.databinding.FragmentClientsListBinding
 import name.paynd.android.clientlist.di.vm.VMFactory
+import name.paynd.android.clientlist.util.Mode
 import javax.inject.Inject
-
 
 class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
     @Inject
     lateinit var vmFactory: VMFactory
 
-    private val viewModel: FatViewModel by viewModels { vmFactory }
+    private val viewModel: ClientListViewModel by viewModels { vmFactory }
     private val viewBinding by viewBinding(FragmentClientsListBinding::bind)
     private var clientAdapter: ClientAdapter? = null
 
@@ -38,9 +38,7 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
         super.onViewCreated(view, savedInstanceState)
 
         clientAdapter = ClientAdapter {
-            viewModel.currentClient = it.toTransferObject()
-            Navigation.findNavController(viewBinding.root)
-                .navigate(R.id.action_clientsListFragment_to_weightFragment)
+            navigateToEdit(it.id)
         }
 
         with(viewBinding) {
@@ -49,8 +47,7 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
         }
 
         viewBinding.addClient.setOnClickListener {
-            Navigation.findNavController(viewBinding.root)
-                .navigate(R.id.action_clientsListFragment_to_weightFragment)
+            navigateToCreate()
         }
 
         lifecycleScope.launch {
@@ -60,6 +57,23 @@ class ClientsListFragment : Fragment(R.layout.fragment_clients_list) {
                 }
             }
         }
+    }
+
+    private fun navigateToCreate() {
+        val action =
+            ClientsListFragmentDirections.actionClientsListFragmentToWeightFragment().apply {
+                actionType = Mode.CREATE
+            }
+        Navigation.findNavController(viewBinding.root).navigate(action)
+    }
+
+    private fun navigateToEdit(id: Long) {
+        val action =
+            ClientsListFragmentDirections.actionClientsListFragmentToWeightFragment().apply {
+                actionType = Mode.EDIT
+                clientId = id
+            }
+        Navigation.findNavController(viewBinding.root).navigate(action)
     }
 
     private fun updateUI(clientList: List<Client>) {

@@ -16,7 +16,7 @@ fun getFormattedString(year: Int, month: Int, day: Int): String {
         .format(formatter)
 }
 
-fun toDOB(string: String): DOB? {
+fun toDOB(string: String?): DOB? {
     runCatching {
         LocalDateTime.from(formatter.parse(string))
     }.onSuccess { time ->

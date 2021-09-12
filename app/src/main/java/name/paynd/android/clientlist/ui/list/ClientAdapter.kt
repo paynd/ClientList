@@ -1,4 +1,4 @@
-package name.paynd.android.clientlist.ui.main
+package name.paynd.android.clientlist.ui.list
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -27,7 +27,7 @@ class ClientAdapter(private val editClickListener: (Client) -> Unit) :
                     .placeholder(R.drawable.img)
                     .into(image)
                 tvEdit.setOnClickListener {
-                    //todo
+                    editClickListener.invoke(client)
                 }
             }
         }

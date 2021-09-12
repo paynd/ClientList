@@ -7,11 +7,20 @@
 
     <fragment
         android:id="@+id/clientsListFragment"
-        android:name="name.paynd.android.clientlist.ui.main.ClientsListFragment"
+        android:name="name.paynd.android.clientlist.ui.list.ClientsListFragment"
         android:label="ClientsListFragment">
         <action
             android:id="@+id/action_clientsListFragment_to_weightFragment"
-            app:destination="@id/weightFragment" />
+            app:destination="@id/weightFragment">
+            <argument
+                android:name="ActionType"
+                android:defaultValue="CREATE"
+                app:argType="name.paynd.android.clientlist.util.Mode" />
+            <argument
+                android:name="clientId"
+                android:defaultValue="0L"
+                app:argType="long" />
+        </action>
     </fragment>
 
     <fragment
@@ -22,6 +31,14 @@
         <action
             android:id="@+id/action_weightFragment_to_dateFragment"
             app:destination="@id/dateFragment" />
+        <argument
+            android:name="ActionType"
+            android:defaultValue="CREATE"
+            app:argType="name.paynd.android.clientlist.util.Mode" />
+        <argument
+            android:name="clientId"
+            android:defaultValue="0L"
+            app:argType="long" />
     </fragment>
 
     <fragment

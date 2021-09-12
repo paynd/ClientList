@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,13 +18,12 @@ import name.paynd.android.clientlist.App
 import name.paynd.android.clientlist.R
 import name.paynd.android.clientlist.databinding.FragmentPhotoBinding
 import name.paynd.android.clientlist.di.vm.VMFactory
-import name.paynd.android.clientlist.ui.main.FatViewModel
 import javax.inject.Inject
 
 class PhotoFragment : Fragment(R.layout.fragment_photo) {
     @Inject
     lateinit var vmFactory: VMFactory
-    private val viewModel: FatViewModel by viewModels { vmFactory }
+    private val viewModel: AddClientViewModel by viewModels { vmFactory }
 
     private val viewBinding by viewBinding(FragmentPhotoBinding::bind)
 
@@ -77,12 +75,15 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
             .load(uri)
             .centerCrop()
             .placeholder(R.drawable.img)
-            .into(viewBinding.photo)
+            .into(viewBinding.photoPreview)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(viewBinding) {
             takePhoto.setOnClickListener {
+                pickPhoto()
+            }
+            photoPreview.setOnClickListener {
                 pickPhoto()
             }
             next.setOnClickListener {
