@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 class InMemoryDataSource : DataSource {
-    private val dataSet: MutableSet<Client> = mutableSetOf<Client>()
+    private val dataMap: MutableMap<Long, Client> = mutableMapOf()
     private val _list = MutableSharedFlow<List<Client>>(
         replay = 1,
         extraBufferCapacity = 1
@@ -13,16 +13,24 @@ class InMemoryDataSource : DataSource {
 
     //or update
     override fun add(client: Client) {
-        dataSet.add(client)
+        dataMap[client.id] = client
         updateFlow()
+    }
+
+    override fun update(client: Client) {
+        dataMap[client.id] = client
     }
 
     override fun delete(client: Client) {
-        dataSet.remove(client)
+        dataMap.remove(client.id)
         updateFlow()
     }
 
+    override fun get(id: Long): Client? {
+        return dataMap[id]
+    }
+
     private fun updateFlow() {
-        val success = _list.tryEmit(dataSet.toList())
+        _list.tryEmit(dataMap.values.toList())
     }
 }
