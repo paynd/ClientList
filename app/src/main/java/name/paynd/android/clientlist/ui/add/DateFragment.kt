@@ -50,11 +50,11 @@ class DateFragment : Fragment(R.layout.fragment_date) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.currentClient?.setupDate(viewBinding.datePicker)
+        viewModel.currentDate()?.setupDate(viewBinding.datePicker)
     }
 
-    private fun ClientTransferObject.setupDate(datePicker: DatePicker) {
-        toDOB(dobString)?.run {
+    private fun String.setupDate(datePicker: DatePicker) {
+        toDOB(this)?.run {
             datePicker.updateDate(year, month, day)
         }
     }

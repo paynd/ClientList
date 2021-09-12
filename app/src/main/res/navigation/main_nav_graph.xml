@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/clientsListFragment"
         android:name="name.paynd.android.clientlist.ui.list.ClientsListFragment"
-        android:label="ClientsListFragment">
+        android:label="Clients List">
         <action
             android:id="@+id/action_clientsListFragment_to_weightFragment"
             app:destination="@id/weightFragment">
@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/weightFragment"
         android:name="name.paynd.android.clientlist.ui.add.WeightFragment"
-        android:label="fragment_weight"
+        android:label="Enter Body Weight"
         tools:layout="@layout/fragment_weight">
         <action
             android:id="@+id/action_weightFragment_to_dateFragment"
@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/dateFragment"
         android:name="name.paynd.android.clientlist.ui.add.DateFragment"
-        android:label="fragment_date"
+        android:label="Enter Date Of Birth"
         tools:layout="@layout/fragment_date">
         <action
             android:id="@+id/action_dateFragment_to_photoFragment"
@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/photoFragment"
         android:name="name.paynd.android.clientlist.ui.add.PhotoFragment"
-        android:label="fragment_photo"
+        android:label="Choose Photo"
         tools:layout="@layout/fragment_photo">
         <action
             android:id="@+id/action_photoFragment_to_clientsListFragment"

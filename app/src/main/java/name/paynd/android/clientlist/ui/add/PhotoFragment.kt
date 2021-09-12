@@ -50,10 +50,8 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
     override fun onResume() {
         super.onResume()
 
-        viewModel.currentClient?.let {
-            it.uri?.let { uri ->
-                updatePhoto(uri)
-            }
+        viewModel.currentPhoto()?.let {
+            updatePhoto(it)
         }
     }
 

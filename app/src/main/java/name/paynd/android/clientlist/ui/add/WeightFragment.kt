@@ -73,9 +73,10 @@ class WeightFragment : Fragment(R.layout.fragment_weight) {
     override fun onResume() {
         super.onResume()
 
-        viewModel.currentClient?.let {
-            it.weight?.let { value -> viewBinding.weightValue.value = value }
-            it.weightUnit?.let { unit -> viewBinding.weightUnit.value = unit.toInt() }
+        viewModel.currentWeight()?.let { weight ->
+            weight.let { value -> viewBinding.weightValue.value = value }
+            viewModel.currentWeightUnit()
+                ?.let { unit -> viewBinding.weightUnit.value = unit.toInt() }
         }
     }
 

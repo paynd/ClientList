@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
+    android:orientation="vertical"
     tools:context=".ui.MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorAccent"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ToolbarTheme"
+        app:titleTextColor="@android:color/white" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/my_nav_host_fragment"
@@ -19,4 +29,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/main_nav_graph" />
 
-</FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

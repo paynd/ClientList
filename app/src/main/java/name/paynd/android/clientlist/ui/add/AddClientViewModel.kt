@@ -12,8 +12,7 @@ class AddClientViewModel @Inject constructor(
     private val dataSource: DataSource,
     private val validator: ClientValidator
 ) : ViewModel() {
-    var currentClient: ClientTransferObject? = null
-
+    private var currentClient: ClientTransferObject? = null
     var mode: Mode = Mode.CREATE
 
     fun loadClient(id: Long) {
@@ -37,6 +36,11 @@ class AddClientViewModel @Inject constructor(
         checkClient()
         currentClient = currentClient?.copy(uri = uri)
     }
+
+    fun currentDate() = currentClient?.dobString
+    fun currentPhoto() = currentClient?.uri
+    fun currentWeight() = currentClient?.weight
+    fun currentWeightUnit() = currentClient?.weightUnit
 
     fun checkAndSave(): Boolean {
         val result = currentClient?.toClient()
