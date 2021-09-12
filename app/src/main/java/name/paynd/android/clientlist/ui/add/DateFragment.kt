@@ -31,17 +31,19 @@ class DateFragment : Fragment(R.layout.fragment_date) {
                 viewModel.updateDOB(getFormattedString(year, month, day))
             }
 
-            next.setOnClickListener {
-                // probably we need more validation here
-                with(datePicker) {
-                    viewModel.updateDOB(getFormattedString(year, month, dayOfMonth))
-                }
+            bottomBar.apply {
+                next.setOnClickListener {
+                    with(datePicker) {
+                        viewModel.updateDOB(getFormattedString(year, month, dayOfMonth))
+                    }
 
-                Navigation.findNavController(viewBinding.root)
-                    .navigate(R.id.action_dateFragment_to_photoFragment)
-            }
-            back.setOnClickListener {
-                Navigation.findNavController(viewBinding.root).popBackStack()
+                    Navigation.findNavController(viewBinding.root)
+                        .navigate(R.id.action_dateFragment_to_photoFragment)
+                }
+                back.setOnClickListener {
+                    Navigation.findNavController(viewBinding.root).popBackStack()
+                }
+                indicator2.setBackgroundResource(R.drawable.dot_selected)
             }
         }
     }

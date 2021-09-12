@@ -44,15 +44,16 @@ class WeightFragment : Fragment(R.layout.fragment_weight) {
                 value = 75
             }
 
-
-
-            bottomBar.next.setOnClickListener {
-                viewModel.updateWeight(weightValue.value, weightUnit.value.toUnit())
-                Navigation.findNavController(viewBinding.root)
-                    .navigate(R.id.action_weightFragment_to_dateFragment)
-            }
-            bottomBar.back.setOnClickListener {
-                Navigation.findNavController(viewBinding.root).popBackStack()
+            with(bottomBar) {
+                next.setOnClickListener {
+                    viewModel.updateWeight(weightValue.value, weightUnit.value.toUnit())
+                    Navigation.findNavController(viewBinding.root)
+                        .navigate(R.id.action_weightFragment_to_dateFragment)
+                }
+                back.setOnClickListener {
+                    Navigation.findNavController(viewBinding.root).popBackStack()
+                }
+                indicator1.setBackgroundResource(R.drawable.dot_selected)
             }
         }
     }

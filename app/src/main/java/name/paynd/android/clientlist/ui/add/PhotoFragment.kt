@@ -105,6 +105,7 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
                 back.setOnClickListener {
                     Navigation.findNavController(viewBinding.root).popBackStack()
                 }
+                indicator3.setBackgroundResource(R.drawable.dot_selected)
             }
         }
     }
