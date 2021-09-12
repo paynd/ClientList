@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
@@ -59,6 +60,7 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
     override fun onAttach(context: Context) {
         (activity?.application as App).appComponent?.inject(this)
         super.onAttach(context)
+
         launcher = registerImagePicker { result: List<Image> ->
             result.forEachIndexed { index, image ->
                 if (index == 0) { // first one only
@@ -86,23 +88,45 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
             photoPreview.setOnClickListener {
                 pickPhoto()
             }
-            next.setOnClickListener {
-                if (viewModel.checkAndSave()) {
-                    Navigation.findNavController(viewBinding.root)
-                        .navigate(
-                            R.id.action_photoFragment_to_clientsListFragment,
-                            null,
-                            NavOptions.Builder().setPopUpTo(
-                                R.id.clientsListFragment,
-                                true
-                            ).build()
-                        )
+
+            with(bottomBar) {
+                next.apply {
+                    setOnClickListener {
+                        when (val result = viewModel.checkPhoto()) {
+                            is ValidationResult.Success -> {
+                                viewModel.checkAndSave()
+                                navigateToNext()
+                            }
+                            is ValidationResult.Error -> showError(result)
+                        }
+                    }
+                    text = resources.getText(R.string.done)
+                }
+                back.setOnClickListener {
+                    Navigation.findNavController(viewBinding.root).popBackStack()
                 }
             }
-            back.setOnClickListener {
-                Navigation.findNavController(viewBinding.root).popBackStack()
-            }
         }
+    }
+
+    private fun navigateToNext() {
+        Navigation.findNavController(viewBinding.root)
+            .navigate(
+                R.id.action_photoFragment_to_clientsListFragment,
+                null,
+                NavOptions.Builder().setPopUpTo(
+                    R.id.clientsListFragment,
+                    true
+                ).build()
+            )
+    }
+
+    private fun showError(err: ValidationResult.Error) {
+        Toast.makeText(
+            context,
+            err.message,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun pickPhoto() {

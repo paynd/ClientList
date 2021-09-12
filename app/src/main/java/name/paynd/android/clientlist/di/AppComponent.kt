@@ -1,6 +1,7 @@
 package name.paynd.android.clientlist.di
 
 import android.app.Application
+import android.content.res.Resources
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
@@ -8,11 +9,9 @@ import dagger.Provides
 import name.paynd.android.clientlist.data.DataSource
 import name.paynd.android.clientlist.data.InMemoryDataSource
 import name.paynd.android.clientlist.di.vm.VMBindsModule
-import name.paynd.android.clientlist.ui.add.DateFragment
-import name.paynd.android.clientlist.ui.add.PhotoFragment
-import name.paynd.android.clientlist.ui.add.WeightFragment
-import name.paynd.android.clientlist.ui.list.ClientsListFragment
 import name.paynd.android.clientlist.ui.MainActivity
+import name.paynd.android.clientlist.ui.add.*
+import name.paynd.android.clientlist.ui.list.ClientsListFragment
 
 @[AppScope Component(
     modules = [
@@ -40,4 +39,13 @@ class AppModule {
     @Provides
     @AppScope
     fun provideDataSource(): DataSource = InMemoryDataSource()
+
+    @Provides
+    @AppScope
+    fun provideResources(context: Application): Resources = context.resources
+
+    @Provides
+    @AppScope
+    fun provideClientValidator(resources: Resources): Validator = ClientValidator(resources)
+
 }

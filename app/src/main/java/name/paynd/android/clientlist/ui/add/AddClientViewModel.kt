@@ -9,7 +9,8 @@ import name.paynd.android.clientlist.util.Mode
 import javax.inject.Inject
 
 class AddClientViewModel @Inject constructor(
-    private val dataSource: DataSource
+    private val dataSource: DataSource,
+    private val validator: ClientValidator
 ) : ViewModel() {
     var currentClient: ClientTransferObject? = null
 
@@ -48,6 +49,8 @@ class AddClientViewModel @Inject constructor(
             false
         }
     }
+
+    fun checkPhoto() = validator.checkPhoto(currentClient)
 
     private fun checkClient() {
         if (currentClient == null) {
