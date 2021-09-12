@@ -53,7 +53,7 @@ class DateFragment : Fragment(R.layout.fragment_date) {
 
     private fun ClientTransferObject.setupDate(datePicker: DatePicker) {
         toDOB(dobString)?.run {
-            datePicker.updateDate(year, month, month)
+            datePicker.updateDate(year, month, day)
         }
     }
 
